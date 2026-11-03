@@ -1,0 +1,23 @@
+# Training configuration for Sequence-Level Knowledge Distillation (Task 2)
+# Student Model: EleutherAI/pythia-70m
+
+model:
+  name: "EleutherAI/pythia-70m"
+  max_sequence_length: 128
+
+training:
+  seed: 42
+  learning_rate: 0.0005
+  batch_size: 8
+  epochs: 3
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  logging_steps: 10
+
+environment:
+  library_versions:
+    python: "3.11.7"
+    torch: "2.5.1"
+    transformers: "4.57.6"
+    datasets: "5.1.0"
+    pyyaml: "6.0.3"
