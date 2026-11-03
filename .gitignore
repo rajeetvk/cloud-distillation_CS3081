@@ -1,0 +1,31 @@
+# Model weights must NOT be committed to git (stored in SeaweedFS S3 or GitHub Release assets)
+*.safetensors
+*.bin
+models/**/*.safetensors
+models/**/*.bin
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# LaTeX build intermediates (keep report.pdf, 230101078.pdf, report.tex, 230101078.tex)
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+
+# Zip archives
+*.zip
+
+# Assignment prompts / scratch
+assign/

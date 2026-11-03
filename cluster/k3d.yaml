@@ -1,0 +1,22 @@
+# k3d cluster configuration for Cloud Computing Mini Project
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: cloud-cluster
+servers: 1
+agents: 0
+image: rancher/k3s:v1.30.0-k3s1
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
+  - port: 8333:8333
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: "180s"
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
