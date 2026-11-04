@@ -1,0 +1,12 @@
+{
+  "requests_total": 10,
+  "requests_success": 10,
+  "requests_failed": 0,
+  "failure_rate_percent": 0.0,
+  "versions_seen_during_test": [
+    "v1",
+    "v2"
+  ],
+  "final_version_after_rollback": "v1",
+  "pass": true
+}

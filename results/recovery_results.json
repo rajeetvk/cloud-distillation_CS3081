@@ -1,0 +1,8 @@
+{
+  "requests_total": 1,
+  "requests_success": 1,
+  "requests_failed": 0,
+  "failure_rate_percent": 0.0,
+  "replica_count_restored": true,
+  "pass": true
+}
