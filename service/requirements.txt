@@ -1,0 +1,8 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+transformers==4.46.3
+boto3==1.35.80
+jsonschema==4.23.0
+urllib3==2.2.3
+requests==2.32.3
