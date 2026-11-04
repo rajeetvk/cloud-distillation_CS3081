@@ -1,0 +1,27 @@
+{
+  "requests_total": 50,
+  "requests_successful": 50,
+  "success_rate_percent": 100.0,
+  "peak_memory_usage": "374.5MiB / 1GiB",
+  "latency_ms": {
+    "avg": 5624.43,
+    "p50": 5598.76,
+    "p95": 7000.71,
+    "min": 4697.6,
+    "max": 7996.32
+  },
+  "sample_headers": [
+    {
+      "version": "v1",
+      "served_by": "708f6c9a75db"
+    },
+    {
+      "version": "v1",
+      "served_by": "708f6c9a75db"
+    },
+    {
+      "version": "v1",
+      "served_by": "708f6c9a75db"
+    }
+  ]
+}
