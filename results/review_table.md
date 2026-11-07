@@ -1,0 +1,10 @@
+# Task 7: Comprehensive System Review Table
+
+| Component or Concern | Evidence (Measured Value) | Limitation Found | Proposed Improvement |
+| :--- | :--- | :--- | :--- |
+| **Data and storage** | **2,861** clean records reconciled ($3,000 = 0 + 1 + 14 + 74 + 50 + 2,861$) with SHA-256 hash | SeaweedFS default of `volume.max=5` caused volume exhaustion on distinct collections | Configure `-volume.max=100` on master and pre-allocate volumes via filer |
+| **Model quality** | Student v2 achieved **100.0%** JSON validity and **34.0%** full-frame accuracy (teacher 42.0%, baseline 0.0%) | Exposure bias during autoregressive generation causing slot drift on unseen tokens | Integrate context-free grammar decoding (Outlines/BNF) and DPO sequence alignment |
+| **Latency and throughput** | Locust test measured $p_{50}=\mathbf{5,599\text{ ms}}$, $p_{95}=\mathbf{7,001\text{ ms}}$, and throughput of **0.48 req/s** | Full 32-bit float PyTorch CPU inference requires ~5 seconds per request | Quantize model weights to INT8/INT4 using ONNX Runtime / `llama.cpp` to achieve $<150$ ms |
+| **Resource utilisation** | Peak memory measured at **374.5 MiB** against 1 GiB limit, 1.0 CPU limit adhered to, **0 OOM kills** | Single container pod uses single-threaded PyTorch execution, bottlenecking multi-core efficiency | Configure `torch.set_num_threads(2)` and deploy Prometheus custom metrics for HPA |
+| **Reliability and recovery** | **6.71s** median cold start, **0.0%** failure rate during rolling update, and pod recovery in **6.74s** | Pods marked terminating without `preStop` hooks dropped in-flight requests during Traefik updates | Inject `preStop` `sleep 5` lifecycle hook and configure graceful termination grace period |
+| **Security and cost** | **6/6 (100.0%)** stateless NACL simulation pass, estimated cost of **₹4.62 INR** per 1,000 requests | Stateless NACL requires manual bidirectional ephemeral port rules (1024–65535) | Adopt state-aware security groups or Kubernetes NetworkPolicies with automated mutual TLS (mTLS) |

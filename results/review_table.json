@@ -1,0 +1,41 @@
+{
+  "task": "Task 7 - System Review Table",
+  "components": [
+    {
+      "component": "Data and storage",
+      "evidence": "2,861 clean records reconciled (3,000 = 0 + 1 + 14 + 74 + 50 + 2,861) with SHA-256 integrity hash",
+      "limitation": "SeaweedFS master default of volume.max=5 caused volume exhaustion across multiple collections",
+      "improvement": "Configure volume.max=100 on master and pre-allocate volumes through filer"
+    },
+    {
+      "component": "Model quality",
+      "evidence": "Student v2 achieved 100.0% JSON validity and 34.0% full-frame accuracy (teacher 42.0%, baseline 0.0%)",
+      "limitation": "Exposure bias during autoregressive decoding causing slot drift on out-of-vocabulary entities",
+      "improvement": "Integrate constrained grammar decoding (Outlines/BNF) and DPO sequence alignment"
+    },
+    {
+      "component": "Latency and throughput",
+      "evidence": "Locust test measured p50=5,599 ms, p95=7,001 ms, and throughput of 0.48 req/s under 4 users",
+      "limitation": "Full 32-bit float PyTorch CPU inference requires ~5 seconds per request without hardware acceleration",
+      "improvement": "Quantize model weights to INT8/INT4 using ONNX Runtime or llama.cpp to achieve sub-150ms inference"
+    },
+    {
+      "component": "Resource utilisation",
+      "evidence": "Peak memory measured at 374.5 MiB against 1 GiB limit, 1.0 CPU limit adhered to, 0 OOM kills",
+      "limitation": "Single container pod uses single-threaded PyTorch execution, bottlenecking multi-core efficiency",
+      "improvement": "Set torch.set_num_threads(2) and configure Prometheus custom metrics for HPA autoscaling"
+    },
+    {
+      "component": "Reliability and recovery",
+      "evidence": "6.71s median cold start, 0.0% failure rate during rolling update and pod failure recovery in 6.74s",
+      "limitation": "Pods marked terminating without preStop hooks dropped in-flight requests during Traefik routing updates",
+      "improvement": "Inject preStop sleep 5s lifecycle hook and configure graceful termination grace periods"
+    },
+    {
+      "component": "Security and cost",
+      "evidence": "6/6 stateless NACL packet simulation pass (100%), estimated cost of ₹4.62 INR per 1,000 requests",
+      "limitation": "Stateless NACL requires manual bidirectional ephemeral port rules (1024-65535)",
+      "improvement": "Adopt state-aware security groups or Kubernetes NetworkPolicies with automated mutual TLS (mTLS)"
+    }
+  ]
+}
