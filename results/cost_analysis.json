@@ -1,0 +1,31 @@
+{
+  "task": "Task 7 - Cost Estimation",
+  "rate_card": {
+    "vcpu_hour_inr": 3.50,
+    "gib_memory_hour_inr": 0.45
+  },
+  "replica_spec": {
+    "cpu_limit_vcpu": 1.0,
+    "memory_limit_gib": 1.0,
+    "running_replicas": 2
+  },
+  "cost_breakdown": {
+    "cost_per_replica_hour_inr": 3.95,
+    "total_hourly_cost_all_replicas_inr": 7.90
+  },
+  "workload_measured": {
+    "load_test_duration_seconds": 120,
+    "load_test_duration_minutes": 2.0,
+    "requests_served_in_window": 57,
+    "requests_per_hour_extrapolated": 1710.0
+  },
+  "cost_per_1000_requests": {
+    "formula": "(hourly_cost_all_replicas / requests_served_per_hour) * 1000",
+    "calculation_steps": [
+      "Hourly cost = 2 replicas * (1.0 * 3.50 + 1.0 * 0.45) = 7.90 INR / hour",
+      "Requests per hour = (57 requests / 2 minutes) * 60 minutes = 1,710 requests / hour",
+      "Cost per 1,000 requests = (7.90 INR / 1,710 requests) * 1000 = 4.61988 INR"
+    ],
+    "final_cost_inr": 4.62
+  }
+}
