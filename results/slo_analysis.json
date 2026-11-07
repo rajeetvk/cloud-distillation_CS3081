@@ -1,0 +1,27 @@
+{
+  "task": "Task 7 - Service Level Objective (SLO) & Error Budget",
+  "slo_definition": {
+    "objective": "99.0% of all POST /parse requests succeed with HTTP 200 within 30 seconds",
+    "target_percentage": 99.0,
+    "measurement_window": "One 2-minute Locust load test run (120 seconds)",
+    "request_concurrency": 4,
+    "spawn_rate": 4
+  },
+  "empirical_metrics": {
+    "total_requests": 57,
+    "successful_requests": 57,
+    "failed_requests": 0,
+    "measured_availability_percentage": 100.0,
+    "median_latency_ms": 5599,
+    "p95_latency_ms": 7001
+  },
+  "error_budget_accounting": {
+    "budget_formula": "total_requests * (1.0 - target_availability)",
+    "total_error_budget_requests": 0.57,
+    "rounded_integer_allowable_errors": 0,
+    "error_budget_consumed_requests": 0,
+    "error_budget_remaining_requests": 0.57,
+    "budget_consumed_percentage": 0.0,
+    "budget_status": "COMPLIANT"
+  }
+}
