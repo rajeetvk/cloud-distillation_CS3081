@@ -75,6 +75,11 @@ The parser accepts an English voice utterance and returns a strict 4-key JSON ob
 │   ├── train.py                  # PyTorch CPU distillation training script
 │   ├── evaluate.py               # Model evaluation script against validation.jsonl
 │   └── loss.csv                  # Recorded per-epoch training loss
+├── worker/
+│   ├── clean.py                  # Task 1 dataset validator and cleaner
+│   ├── worker.py                 # Sharded batch labeling worker
+│   ├── ollama_proxy.py           # Host networking proxy for teacher queries
+│   └── Dockerfile                # Worker container definition
 ├── .github/workflows/
 │   └── ci.yml                    # CI pipeline (gitleaks, lint, unit tests, eval, quality gate)
 ├── AI_USE.md                     # Declaration of AI tool usage and verification protocols
