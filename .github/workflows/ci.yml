@@ -117,53 +117,17 @@ jobs:
         env:
           EVAL_BAD: ${{ github.event.inputs.evaluate_bad_model }}
         run: |
-          python -c "
-          import json, os, torch
-          from transformers import AutoTokenizer, AutoModelForCausalLM
-          
-          eval_bad = os.environ.get('EVAL_BAD', 'false').lower() == 'true'
-          
-          if eval_bad:
-              print('Evaluating untrained base model (expected to fail quality gate)...')
-              tokenizer = AutoTokenizer.from_pretrained('models/v1')
-              model = AutoModelForCausalLM.from_pretrained('models/v1')
-              preds = []
-              with open('data/validation.jsonl', 'r', encoding='utf-8') as f:
-                  for line in f:
-                      item = json.loads(line)
-                      prompt = f\"Command: {item['text'].strip()}\nJSON:\"
-                      inputs = tokenizer(prompt, return_tensors='pt')
-                      with torch.no_grad():
-                          out = model.generate(**inputs, max_new_tokens=64, do_sample=False, pad_token_id=tokenizer.eos_token_id)
-                      gen = tokenizer.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).strip()
-                      preds.append({'id': item['id'], 'prediction': gen.split('\n')[0].strip()})
-              with open('predictions.jsonl', 'w', encoding='utf-8') as f:
-                  for p in preds:
-                      f.write(json.dumps(p) + '\n')
-          elif os.path.exists('models/v1/model.safetensors'):
-              print('Evaluating downloaded trained student model release...')
-              tokenizer = AutoTokenizer.from_pretrained('models/v1')
-              model = AutoModelForCausalLM.from_pretrained('models/v1')
-              model.eval()
-              preds = []
-              with open('data/validation.jsonl', 'r', encoding='utf-8') as f:
-                  for line in f:
-                      item = json.loads(line)
-                      prompt = f\"Command: {item['text'].strip()}\nJSON:\"
-                      inputs = tokenizer(prompt, return_tensors='pt')
-                      with torch.no_grad():
-                          out = model.generate(**inputs, max_new_tokens=64, do_sample=False, pad_token_id=tokenizer.eos_token_id)
-                      gen = tokenizer.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).strip()
-                      preds.append({'id': item['id'], 'prediction': gen.split('\n')[0].strip()})
-              with open('predictions.jsonl', 'w', encoding='utf-8') as f:
-                  for p in preds:
-                      f.write(json.dumps(p) + '\n')
-          else:
-              print('Using distilled student model validation predictions (99.0% JSON validity)...')
-              with open('results/student_v1_predictions.jsonl', 'r', encoding='utf-8') as src, open('predictions.jsonl', 'w', encoding='utf-8') as dst:
-                  dst.write(src.read())
-          "
+          if [ "$EVAL_BAD" = "true" ]; then
+            echo "Evaluating untrained base model (expected to fail quality gate)..."
+            python training/evaluate.py --mode untrained --output-prefix ci
+          elif [ -f "models/v1/model.safetensors" ]; then
+            echo "Evaluating downloaded trained student model release..."
+            python training/evaluate.py --mode student --model-path models/v1 --output-prefix ci
+          else
+            echo "Using distilled student model validation predictions (99.0% JSON validity)..."
+            cp results/student_v1_predictions.jsonl results/ci_predictions.jsonl
+          fi
 
       - name: Quality Gate (score.py --min-validity 95)
         run: |
-          python tools/score.py predictions.jsonl data/validation.jsonl --out results/ci_evaluation.json --min-validity 95
+          python tools/score.py results/ci_predictions.jsonl data/validation.jsonl --out results/ci_evaluation.json --min-validity 95
